@@ -1,10 +1,13 @@
 import streamlit as st
 import google.generativeai as genai
-import PIL.Image
 
 # Monkeypatch for MoviePy compatibility with Pillow 10+
-if not hasattr(PIL.Image, 'ANTIALIAS'):
-    PIL.Image.ANTIALIAS = PIL.Image.LANCZOS
+try:
+    import PIL.Image
+    if not hasattr(PIL.Image, 'ANTIALIAS'):
+        PIL.Image.ANTIALIAS = PIL.Image.LANCZOS
+except Exception as e:
+    st.warning(f"PIL patch warning: {e}")
 
 from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx, AudioFileClip, CompositeAudioClip
 import tempfile
