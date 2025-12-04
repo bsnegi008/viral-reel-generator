@@ -1,20 +1,43 @@
 import streamlit as st
-import google.generativeai as genai
+
+# Debug: Show what's loading
+st.write("🔍 Loading dependencies...")
+
+try:
+    import google.generativeai as genai
+    st.write("✅ google.generativeai imported")
+except Exception as e:
+    st.error(f"❌ Failed to import google.generativeai: {e}")
+    st.stop()
 
 # Monkeypatch for MoviePy compatibility with Pillow 10+
 try:
     import PIL.Image
     if not hasattr(PIL.Image, 'ANTIALIAS'):
         PIL.Image.ANTIALIAS = PIL.Image.LANCZOS
+    st.write("✅ PIL.Image patched")
 except Exception as e:
-    st.warning(f"PIL patch warning: {e}")
+    st.warning(f"⚠️ PIL patch warning: {e}")
 
-from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx, AudioFileClip, CompositeAudioClip
-import tempfile
-import os
-import json
-import time
-from dotenv import load_dotenv
+try:
+    from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx, AudioFileClip, CompositeAudioClip
+    st.write("✅ MoviePy imported")
+except Exception as e:
+    st.error(f"❌ Failed to import MoviePy: {e}")
+    st.stop()
+
+try:
+    import tempfile
+    import os
+    import json
+    import time
+    from dotenv import load_dotenv
+    st.write("✅ Standard libraries imported")
+except Exception as e:
+    st.error(f"❌ Failed to import standard libraries: {e}")
+    st.stop()
+
+st.success("🎉 All imports successful!")
 
 # Load environment variables
 load_dotenv()
